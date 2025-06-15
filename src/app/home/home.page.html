@@ -1,20 +1,31 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Mi Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <ion-segment [(ngModel)]="segmento">
+    <ion-segment-button value="experiencia">
+      <ion-label>Experiencia</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="certificaciones">
+      <ion-label>Certificaciones</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="datos">
+      <ion-label>Mis Datos</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div *ngIf="segmento === 'experiencia'">
+    <app-experiencia-laboral></app-experiencia-laboral>
   </div>
+  <div *ngIf="segmento === 'certificaciones'">
+    <app-certificaciones></app-certificaciones>
+  </div>
+
+    <div *ngIf="segmento === 'datos'">
+    <app-certificaciones></app-certificaciones>
+  </div>
+
 </ion-content>
