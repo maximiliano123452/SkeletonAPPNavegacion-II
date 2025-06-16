@@ -1,6 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Mi Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" (click)="cerrarSesion()">
+        <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -23,9 +28,8 @@
   <div *ngIf="segmento === 'certificaciones'">
     <app-certificaciones></app-certificaciones>
   </div>
-
-    <div *ngIf="segmento === 'datos'">
-    <app-certificaciones></app-certificaciones>
+  <div *ngIf="segmento === 'datos'">
+    <app-mis-datos></app-mis-datos>
   </div>
-
 </ion-content>
+

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 
 @Component({
   selector: 'app-login',
@@ -8,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private authGuard: AuthGuard
+  ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  iniciarSesion() {
+    this.authGuard.login(); // Simula autenticación
+    this.router.navigate(['/home']); // Redirige a Home
   }
-
 }

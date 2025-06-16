@@ -1,3 +1,33 @@
-<p>
-  certificaciones works!
-</p>
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Certificaciones</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">Nombre de la certificación</ion-label>
+        <ion-input [(ngModel)]="certificacion.nombre"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Institución</ion-label>
+        <ion-input [(ngModel)]="certificacion.institucion"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Año</ion-label>
+        <ion-input type="number" [(ngModel)]="certificacion.anio"></ion-input>
+      </ion-item>
+
+      <ion-button expand="full" (click)="guardar()">Guardar</ion-button>
+    </ion-list>
+
+    <ion-list *ngIf="certificaciones.length > 0">
+      <ion-list-header>Certificaciones Registradas</ion-list-header>
+      <ion-item *ngFor="let cert of certificaciones">
+        {{ cert.nombre }} - {{ cert.institucion }} ({{ cert.anio }})
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>

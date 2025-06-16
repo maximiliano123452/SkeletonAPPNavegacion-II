@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-certificaciones',
@@ -6,10 +6,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./certificaciones.component.scss'],
   standalone: false
 })
-export class CertificacionesComponent  implements OnInit {
+export class CertificacionesComponent {
+  certificacion = {
+    nombre: '',
+    institucion: '',
+    anio: ''
+  };
 
-  constructor() { }
+  certificaciones: any[] = [];
 
-  ngOnInit() {}
-
+  guardar() {
+    if (this.certificacion.nombre && this.certificacion.institucion && this.certificacion.anio) {
+      this.certificaciones.push({ ...this.certificacion });
+      this.certificacion = { nombre: '', institucion: '', anio: '' };
+    }
+  }
 }
+

@@ -1,3 +1,37 @@
-<p>
-  experiencia-laboral works!
-</p>
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Experiencia Laboral</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <form [formGroup]="formulario">
+
+      <ion-item>
+        <ion-label position="floating">Empresa</ion-label>
+        <ion-input formControlName="empresa"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Año de inicio</ion-label>
+        <ion-input type="number" formControlName="anioInicio"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Actualmente trabaja aquí</ion-label>
+        <ion-toggle formControlName="trabajaActualmente" (ionChange)="toggleTrabajaActualmente()"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="!formulario.get('trabajaActualmente')?.value">
+        <ion-label position="floating">Año de término</ion-label>
+        <ion-input type="number" formControlName="anioTermino"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Cargo</ion-label>
+        <ion-input formControlName="cargo"></ion-input>
+      </ion-item>
+
+      <ion-button expand="full" (click)="guardar()">Guardar</ion-button>
+    </form>
+  </ion-card-content>
+</ion-card>

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Component({
   selector: 'app-home',
@@ -7,8 +9,15 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class HomePage {
-segmento: string = 'experiencia';
+  segmento: string = 'experiencia';
 
-  constructor() {}
+  constructor(
+    private router: Router,
+    private authGuard: AuthGuard
+  ) {}
 
+  cerrarSesion() {
+    this.authGuard.logout(); // Desactiva el acceso
+    this.router.navigate(['/login']); // Redirige al login
+  }
 }
