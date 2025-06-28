@@ -1,35 +1,87 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Mi Perfil</ion-title>
+    <ion-title>Salud App</ion-title>
     <ion-buttons slot="end">
-      <ion-button color="danger" (click)="cerrarSesion()">
-        <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+        Salir
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-segment [(ngModel)]="segmento">
-    <ion-segment-button value="experiencia">
-      <ion-label>Experiencia</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="certificaciones">
-      <ion-label>Certificaciones</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="datos">
-      <ion-label>Mis Datos</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+<ion-content [fullscreen]="true">
+  <div class="home-container">
+    
+    <div class="welcome-section">
+      <ion-icon name="medical" size="large" color="primary"></ion-icon>
+      <h1>¡Bienvenido!</h1>
+      <p *ngIf="usuario">
+        Hola <strong>{{ usuario.nombre }} {{ usuario.apellido }}</strong><br>
+        Rol: <ion-chip color="primary">{{ tipoUsuarioLabel }}</ion-chip>
+      </p>
+    </div>
 
-  <div *ngIf="segmento === 'experiencia'">
-    <app-experiencia-laboral></app-experiencia-laboral>
-  </div>
-  <div *ngIf="segmento === 'certificaciones'">
-    <app-certificaciones></app-certificaciones>
-  </div>
-  <div *ngIf="segmento === 'datos'">
-    <app-mis-datos></app-mis-datos>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Acceso Rápido</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        
+        <ion-button expand="block" (click)="irAPerfil()" class="profile-button">
+          <ion-icon name="person" slot="start"></ion-icon>
+          Mi Perfil
+        </ion-button>
+
+        <ion-button expand="block" fill="outline" (click)="logout()" class="logout-button">
+          <ion-icon name="log-out" slot="start"></ion-icon>
+          Cerrar Sesión
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+
+    <div class="info-section" *ngIf="usuario?.tipoUsuario === 'medico'">
+      <ion-card color="success">
+        <ion-card-content>
+          <div class="info-content">
+            <ion-icon name="medical" size="large"></ion-icon>
+            <div>
+              <h3>Panel Médico</h3>
+              <p>Complete su perfil para comenzar a recibir consultas de pacientes.</p>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div class="info-section" *ngIf="usuario?.tipoUsuario === 'paciente'">
+      <ion-card color="primary">
+        <ion-card-content>
+          <div class="info-content">
+            <ion-icon name="person" size="large"></ion-icon>
+            <div>
+              <h3>Panel Paciente</h3>
+              <p>Busque médicos cerca de usted y agende sus consultas.</p>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <div class="info-section" *ngIf="usuario?.tipoUsuario === 'administrador'">
+      <ion-card color="warning">
+        <ion-card-content>
+          <div class="info-content">
+            <ion-icon name="shield-checkmark" size="large"></ion-icon>
+            <div>
+              <h3>Panel Administrador</h3>
+              <p>Gestione usuarios y verifique perfiles médicos.</p>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
   </div>
 </ion-content>
-

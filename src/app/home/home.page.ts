@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthGuard } from '../guards/auth.guard';
+import { AuthService } from '../services/auth.service';
+import { TipoUsuario } from '../models/user.models';
 
 @Component({
   selector: 'app-home',
@@ -9,15 +10,52 @@ import { AuthGuard } from '../guards/auth.guard';
   standalone: false,
 })
 export class HomePage {
-  segmento: string = 'experiencia';
+
+  usuario: any = null;
 
   constructor(
-    private router: Router,
-    private authGuard: AuthGuard
-  ) {}
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.cargarUsuario();
+  }
 
-  cerrarSesion() {
-    this.authGuard.logout(); // Desactiva el acceso
-    this.router.navigate(['/login']); // Redirige al login
+  cargarUsuario() {
+    this.usuario = this.authService.getCurrentUser();
+  }
+
+  async logout() {
+    await this.authService.logout();
+  }
+
+  irAPerfil() {
+    if (this.usuario) {
+      switch (this.usuario.tipoUsuario) {
+        case TipoUsuario.MEDICO:
+          this.router.navigate(['/medico/perfil']);
+          break;
+        case TipoUsuario.PACIENTE:
+          this.router.navigate(['/paciente/perfil']);
+          break;
+        case TipoUsuario.ADMINISTRADOR:
+          this.router.navigate(['/admin/dashboard']);
+          break;
+      }
+    }
+  }
+
+  get tipoUsuarioLabel(): string {
+    if (!this.usuario) return '';
+    
+    switch (this.usuario.tipoUsuario) {
+      case TipoUsuario.MEDICO:
+        return 'Médico';
+      case TipoUsuario.PACIENTE:
+        return 'Paciente';
+      case TipoUsuario.ADMINISTRADOR:
+        return 'Administrador';
+      default:
+        return 'Usuario';
+    }
   }
 }

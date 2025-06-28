@@ -1,24 +1,89 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title>Iniciar Sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content [fullscreen]="true">
+  <div class="login-container">
+    
+    <!-- Logo o título de la app -->
+    <div class="header-section">
+      <ion-icon name="medical" size="large" color="primary"></ion-icon>
+      <h1>Salud App</h1>
+      <p>Plataforma integral de salud</p>
+    </div>
 
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">login</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Acceso al Sistema</ion-card-title>
+        </ion-card-header>
+        
+        <ion-card-content>
+          
+          <!-- Email -->
+          <ion-item>
+            <ion-label position="stacked">Email</ion-label>
+            <ion-input 
+              formControlName="email" 
+              type="email" 
+              placeholder="correo@ejemplo.com">
+            </ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="email?.invalid && email?.touched">
+            <small>
+              <span *ngIf="email?.errors?.['required']">El email es requerido</span>
+              <span *ngIf="email?.errors?.['email']">Ingrese un email válido</span>
+            </small>
+          </ion-text>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Bienvenido</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-button expand="full" (click)="iniciarSesion()">Ingresar</ion-button>
-    </ion-card-content>
-  </ion-card>
+          <!-- Contraseña -->
+          <ion-item>
+            <ion-label position="stacked">Contraseña</ion-label>
+            <ion-input 
+              formControlName="password" 
+              [type]="showPassword ? 'text' : 'password'" 
+              placeholder="Su contraseña">
+            </ion-input>
+            <ion-button 
+              fill="clear" 
+              slot="end" 
+              (click)="togglePassword()">
+              <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <ion-text color="danger" *ngIf="password?.invalid && password?.touched">
+            <small>
+              <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
+              <span *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</span>
+            </small>
+          </ion-text>
 
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Botones de acción -->
+      <div class="action-buttons">
+        <ion-button 
+          expand="block" 
+          type="submit" 
+          [disabled]="!loginForm.valid"
+          class="login-button">
+          <ion-icon name="log-in" slot="start"></ion-icon>
+          Iniciar Sesión
+        </ion-button>
+
+        <ion-button 
+          expand="block" 
+          fill="clear" 
+          (click)="goToRegister()"
+          class="register-link">
+          ¿No tienes cuenta? Regístrate aquí
+        </ion-button>
+      </div>
+
+    </form>
+  </div>
 </ion-content>

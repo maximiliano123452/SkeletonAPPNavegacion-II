@@ -1,0 +1,336 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Mi Perfil Médico</ion-title>
+    <ion-buttons slot="end">
+      <ion-chip [color]="colorEstado">
+        <ion-icon name="checkmark-circle" *ngIf="estadoVerificacion === 'Verificado'"></ion-icon>
+        <ion-icon name="time" *ngIf="estadoVerificacion === 'Pendiente'"></ion-icon>
+        <ion-icon name="close-circle" *ngIf="estadoVerificacion === 'Rechazado'"></ion-icon>
+        <ion-label>{{ estadoVerificacion }}</ion-label>
+      </ion-chip>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="medicoForm" (ngSubmit)="guardarPerfil()">
+    
+    <!-- Sección de foto de perfil -->
+    <ion-card class="foto-perfil-card">
+      <ion-card-content>
+        <div class="foto-section">
+          <div class="avatar-container" (click)="mostrarOpcionesFoto()">
+            <ion-avatar size="large">
+              <img [src]="fotoPerfil || 'assets/images/default-doctor.png'" alt="Foto perfil">
+            </ion-avatar>
+            <div class="camera-overlay">
+              <ion-icon name="camera"></ion-icon>
+            </div>
+          </div>
+          <div class="foto-info">
+            <h3>Foto de Perfil</h3>
+            <p>Toca para cambiar tu foto</p>
+            <ion-button fill="outline" size="small" (click)="mostrarOpcionesFoto()">
+              <ion-icon name="camera" slot="start"></ion-icon>
+              {{ fotoPerfil ? 'Cambiar' : 'Agregar' }} Foto
+            </ion-button>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Información personal -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="person" color="primary"></ion-icon>
+          Información Personal
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        
+        <ion-item>
+          <ion-label position="stacked">Nombre</ion-label>
+          <ion-input formControlName="nombre" readonly></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Apellido</ion-label>
+          <ion-input formControlName="apellido" readonly></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Email</ion-label>
+          <ion-input formControlName="email" readonly></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Teléfono *</ion-label>
+          <ion-input formControlName="telefono" placeholder="+56 9 1234 5678"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Fecha de Nacimiento *</ion-label>
+          <ion-datetime 
+            formControlName="fechaNacimiento" 
+            display-format="DD/MM/YYYY"
+            max="2005-12-31"
+            min="1940-01-01">
+          </ion-datetime>
+        </ion-item>
+
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Información profesional -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="medical" color="success"></ion-icon>
+          Información Profesional
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <ion-item>
+          <ion-label position="stacked">Especialidad *</ion-label>
+          <ion-select formControlName="especialidad" placeholder="Seleccione su especialidad">
+            <ion-select-option *ngFor="let esp of especialidades" [value]="esp">
+              {{ esp }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Número de Licencia Médica *</ion-label>
+          <ion-input 
+            formControlName="numeroLicencia" 
+            type="number" 
+            placeholder="123456">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Universidad de Estudios *</ion-label>
+          <ion-input 
+            formControlName="universidad" 
+            placeholder="Universidad donde estudió medicina">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Años de Experiencia *</ion-label>
+          <ion-input 
+            formControlName="experiencia" 
+            type="number" 
+            min="0" 
+            max="50"
+            placeholder="5">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Tarifa por Consulta (CLP) *</ion-label>
+          <ion-input 
+            formControlName="tarifaConsulta" 
+            type="number" 
+            min="1000"
+            placeholder="25000">
+          </ion-input>
+        </ion-item>
+
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Certificaciones -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="school" color="tertiary"></ion-icon>
+          Certificaciones y Especializaciones
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <div formArrayName="certificaciones">
+          <div *ngFor="let cert of certificaciones.controls; let i = index" class="certificacion-item">
+            <ion-item>
+              <ion-label position="stacked">Certificación {{ i + 1 }}</ion-label>
+              <ion-input 
+                [formControlName]="i" 
+                placeholder="Nombre de la certificación">
+              </ion-input>
+              <ion-button 
+                fill="clear" 
+                color="danger" 
+                slot="end"
+                (click)="eliminarCertificacion(i)">
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </div>
+        </div>
+
+        <ion-button 
+          expand="block" 
+          fill="outline" 
+          (click)="agregarCertificacion()"
+          class="add-certification-btn">
+          <ion-icon name="add" slot="start"></ion-icon>
+          Agregar Certificación
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Consultorio y ubicación -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="location" color="warning"></ion-icon>
+          Consultorio y Ubicación
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <ion-item>
+          <ion-label position="stacked">Dirección del Consultorio *</ion-label>
+          <ion-textarea 
+            formControlName="direccionConsultorio" 
+            rows="3"
+            placeholder="Dirección completa del consultorio donde atiende">
+          </ion-textarea>
+        </ion-item>
+
+        <div class="ubicacion-section">
+          <ion-button 
+            expand="block" 
+            fill="outline" 
+            (click)="obtenerUbicacion()"
+            [disabled]="cargandoUbicacion">
+            <ion-icon name="location" slot="start"></ion-icon>
+            <ion-spinner *ngIf="cargandoUbicacion" slot="start"></ion-spinner>
+            {{ cargandoUbicacion ? 'Obteniendo...' : 'Obtener Ubicación GPS' }}
+          </ion-button>
+
+          <div *ngIf="ubicacionActual" class="ubicacion-info">
+            <ion-chip color="success">
+              <ion-icon name="checkmark-circle"></ion-icon>
+              <ion-label>Ubicación obtenida</ion-label>
+            </ion-chip>
+            <p class="coordinates">
+              📍 Lat: {{ ubicacionActual.latitude | number:'1.6-6' }}<br>
+              📍 Lng: {{ ubicacionActual.longitude | number:'1.6-6' }}
+            </p>
+          </div>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Horarios de atención -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="time" color="secondary"></ion-icon>
+          Horarios de Atención
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+
+        <div formGroupName="horarioAtencion">
+          
+          <!-- Días de atención -->
+          <ion-item>
+            <ion-label position="stacked">Días de Atención *</ion-label>
+            <ion-select 
+              formControlName="dias" 
+              multiple="true" 
+              placeholder="Seleccione los días">
+              <ion-select-option *ngFor="let dia of diasSemana" [value]="dia.value">
+                {{ dia.label }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <!-- Hora de inicio -->
+          <ion-item>
+            <ion-label position="stacked">Hora de Inicio *</ion-label>
+            <ion-datetime 
+              formControlName="horaInicio"
+              display-format="HH:mm"
+              picker-format="HH:mm"
+              placeholder="08:00">
+            </ion-datetime>
+          </ion-item>
+
+          <!-- Hora de fin -->
+          <ion-item>
+            <ion-label position="stacked">Hora de Término *</ion-label>
+            <ion-datetime 
+              formControlName="horaFin"
+              display-format="HH:mm"
+              picker-format="HH:mm"
+              placeholder="18:00">
+            </ion-datetime>
+          </ion-item>
+
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Botón de guardar -->
+    <div class="save-section">
+      <ion-button 
+        expand="block" 
+        type="submit" 
+        [disabled]="!formularioValido"
+        class="save-button"
+        size="large">
+        <ion-icon name="save" slot="start"></ion-icon>
+        {{ perfilCompletado ? 'Actualizar Perfil' : 'Guardar Perfil' }}
+      </ion-button>
+
+      <!-- Información sobre verificación -->
+      <ion-card class="verification-info" *ngIf="!perfilCompletado">
+        <ion-card-content>
+          <div class="info-content">
+            <ion-icon name="information-circle" color="primary"></ion-icon>
+            <div>
+              <h4>Proceso de Verificación</h4>
+              <p>Su perfil será revisado por nuestro equipo. Una vez verificado, podrá recibir consultas de pacientes.</p>
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Mensaje de estado -->
+      <div class="status-message" *ngIf="perfilCompletado">
+        <ion-card [color]="colorEstado === 'success' ? 'success' : colorEstado === 'danger' ? 'danger' : 'warning'">
+          <ion-card-content>
+            <div class="status-content">
+              <ion-icon [name]="estadoVerificacion === 'Verificado' ? 'checkmark-circle' : estadoVerificacion === 'Rechazado' ? 'close-circle' : 'time'"></ion-icon>
+              <div>
+                <h4 *ngIf="estadoVerificacion === 'Verificado'">¡Perfil Verificado!</h4>
+                <h4 *ngIf="estadoVerificacion === 'Pendiente'">Verificación Pendiente</h4>
+                <h4 *ngIf="estadoVerificacion === 'Rechazado'">Verificación Rechazada</h4>
+                
+                <p *ngIf="estadoVerificacion === 'Verificado'">
+                  Su perfil ha sido verificado. Ya puede recibir consultas de pacientes.
+                </p>
+                <p *ngIf="estadoVerificacion === 'Pendiente'">
+                  Su perfil está siendo revisado por nuestro equipo. Le notificaremos cuando esté listo.
+                </p>
+                <p *ngIf="estadoVerificacion === 'Rechazado'">
+                  Su perfil necesita correcciones. Por favor, revise la información y vuelva a enviar.
+                </p>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+  </form>
+</ion-content>
