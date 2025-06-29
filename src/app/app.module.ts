@@ -21,9 +21,16 @@ import { StorageService } from './services/storage.service';
 import { AuthService } from './services/auth.service';
 import { GeolocationService } from './services/geolocation.service';
 import { CameraService } from './services/camera.service';
+import { WellnessService } from './services/wellness.service';
+
+// Componentes
+import { SideMenuComponent } from './components/side-menu/side-menu.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    SideMenuComponent // 👈 NUEVO componente
+  ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -43,9 +50,9 @@ import { CameraService } from './services/camera.service';
     StorageService,
     AuthService,
     GeolocationService,
-    CameraService
+    CameraService,
+    WellnessService // 👈 NUEVO servicio
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
-

@@ -1,0 +1,183 @@
+ion-content {
+  --background: linear-gradient(135deg, var(--ion-color-light-tint) 0%, var(--ion-color-light) 100%);
+}
+
+// Sección del usuario
+.user-section {
+  padding: 20px;
+  background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+  color: white;
+  text-align: center;
+  margin-bottom: 10px;
+  
+  .user-avatar {
+    margin-bottom: 15px;
+    
+    ion-avatar {
+      width: 80px;
+      height: 80px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      margin: 0 auto;
+      
+      img {
+        object-fit: cover;
+      }
+    }
+  }
+  
+  .user-info {
+    h3 {
+      margin: 0 0 10px 0;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    
+    ion-chip {
+      --background: rgba(255, 255, 255, 0.2);
+      --color: white;
+      backdrop-filter: blur(10px);
+      
+      ion-icon {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+// Sección de bienvenida
+.welcome-section {
+  padding: 30px 20px;
+  text-align: center;
+  
+  .welcome-content {
+    ion-icon {
+      margin-bottom: 15px;
+    }
+    
+    h3 {
+      margin: 0 0 10px 0;
+      color: var(--ion-color-dark);
+      font-weight: 600;
+    }
+    
+    p {
+      margin: 0;
+      color: var(--ion-color-medium);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// Lista del menú
+.menu-list {
+  background: transparent;
+  padding: 10px 0;
+  
+  .menu-item {
+    --background: transparent;
+    --border-radius: 12px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    margin: 5px 15px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      --background: var(--ion-color-primary-tint);
+      transform: translateX(5px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    ion-label {
+      font-weight: 500;
+      color: var(--ion-color-dark);
+    }
+    
+    ion-icon[slot="start"] {
+      margin-right: 15px;
+      font-size: 1.3rem;
+    }
+    
+    ion-icon[slot="end"] {
+      font-size: 1rem;
+    }
+  }
+}
+
+// Sección de logout
+.logout-section {
+  margin-top: 20px;
+  padding: 0 15px;
+  
+  .logout-item {
+    --background: transparent;
+    --border-radius: 12px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    border: 1px solid var(--ion-color-danger-tint);
+    
+    &:hover {
+      --background: var(--ion-color-danger-tint);
+    }
+    
+    ion-icon {
+      margin-right: 15px;
+      font-size: 1.3rem;
+    }
+    
+    ion-label {
+      font-weight: 500;
+    }
+  }
+}
+
+// Footer del menú
+.menu-footer {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 0 20px;
+  
+  p {
+    margin: 2px 0;
+    font-size: 0.8rem;
+    color: var(--ion-color-medium);
+  }
+}
+
+// Animaciones
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.menu-item {
+  animation: slideInLeft 0.3s ease-out;
+  
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.15s; }
+  &:nth-child(3) { animation-delay: 0.2s; }
+  &:nth-child(4) { animation-delay: 0.25s; }
+  &:nth-child(5) { animation-delay: 0.3s; }
+  &:nth-child(6) { animation-delay: 0.35s; }
+  &:nth-child(7) { animation-delay: 0.4s; }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .user-section {
+    padding: 15px;
+    
+    .user-avatar ion-avatar {
+      width: 70px;
+      height: 70px;
+    }
+  }
+}

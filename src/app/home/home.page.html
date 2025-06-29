@@ -1,10 +1,12 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Salud App</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
-        Salir
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -22,25 +24,82 @@
       </p>
     </div>
 
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Acceso Rápido</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
+    <!-- Acceso rápido a funcionalidades principales -->
+    <div class="quick-access">
+      <h2>Acceso Rápido</h2>
+      
+      <div class="access-grid">
         
-        <ion-button expand="block" (click)="irAPerfil()" class="profile-button">
-          <ion-icon name="person" slot="start"></ion-icon>
-          Mi Perfil
-        </ion-button>
+        <!-- Mi Perfil -->
+        <ion-card class="access-card" (click)="irAPerfil()">
+          <ion-card-content>
+            <div class="card-icon">
+              <ion-icon name="person-circle" color="primary"></ion-icon>
+            </div>
+            <h3>Mi Perfil</h3>
+            <p>Ver y editar información personal</p>
+          </ion-card-content>
+        </ion-card>
 
-        <ion-button expand="block" fill="outline" (click)="logout()" class="logout-button">
-          <ion-icon name="log-out" slot="start"></ion-icon>
-          Cerrar Sesión
-        </ion-button>
+        <!-- Bienestar -->
+        <ion-card class="access-card" (click)="navegarA('/bienestar')">
+          <ion-card-content>
+            <div class="card-icon">
+              <ion-icon name="heart" color="success"></ion-icon>
+            </div>
+            <h3>Bienestar</h3>
+            <p>Consejos y ejercicios de relajación</p>
+          </ion-card-content>
+        </ion-card>
 
-      </ion-card-content>
-    </ion-card>
+        <!-- Farmacias -->
+        <ion-card class="access-card" (click)="navegarA('/farmacias')">
+          <ion-card-content>
+            <div class="card-icon">
+              <ion-icon name="medical" color="tertiary"></ion-icon>
+            </div>
+            <h3>Farmacias</h3>
+            <p>Encuentra farmacias cercanas</p>
+          </ion-card-content>
+        </ion-card>
 
+        <!-- Citas -->
+        <ion-card class="access-card" (click)="navegarA('/citas')">
+          <ion-card-content>
+            <div class="card-icon">
+              <ion-icon name="calendar" color="secondary"></ion-icon>
+            </div>
+            <h3>Citas</h3>
+            <p>Agenda y gestiona tus citas</p>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Historial Médico -->
+        <ion-card class="access-card" (click)="navegarA('/historial-medico')">
+          <ion-card-content>
+            <div class="card-icon">
+              <ion-icon name="document-text" color="warning"></ion-icon>
+            </div>
+            <h3>Historial</h3>
+            <p>Tu historial médico completo</p>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Buscar Médicos (solo para pacientes) -->
+        <ion-card class="access-card" *ngIf="usuario?.tipoUsuario === 'paciente'" (click)="navegarA('/buscar-medicos')">
+          <ion-card-content>
+            <div class="card-icon">
+              <ion-icon name="search" color="medium"></ion-icon>
+            </div>
+            <h3>Buscar Médicos</h3>
+            <p>Encuentra especialistas cerca</p>
+          </ion-card-content>
+        </ion-card>
+
+      </div>
+    </div>
+
+    <!-- Información específica por tipo de usuario -->
     <div class="info-section" *ngIf="usuario?.tipoUsuario === 'medico'">
       <ion-card color="success">
         <ion-card-content>
@@ -49,6 +108,9 @@
             <div>
               <h3>Panel Médico</h3>
               <p>Complete su perfil para comenzar a recibir consultas de pacientes.</p>
+              <ion-button fill="outline" color="light" size="small" (click)="irAPerfil()">
+                Completar Perfil
+              </ion-button>
             </div>
           </div>
         </ion-card-content>
@@ -63,6 +125,9 @@
             <div>
               <h3>Panel Paciente</h3>
               <p>Busque médicos cerca de usted y agende sus consultas.</p>
+              <ion-button fill="outline" color="light" size="small" (click)="navegarA('/buscar-medicos')">
+                Buscar Médicos
+              </ion-button>
             </div>
           </div>
         </ion-card-content>
@@ -77,6 +142,9 @@
             <div>
               <h3>Panel Administrador</h3>
               <p>Gestione usuarios y verifique perfiles médicos.</p>
+              <ion-button fill="outline" color="light" size="small" (click)="navegarA('/admin/dashboard')">
+                Ir al Dashboard
+              </ion-button>
             </div>
           </div>
         </ion-card-content>

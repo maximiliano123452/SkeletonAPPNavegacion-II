@@ -108,6 +108,14 @@ const routes: Routes = [
   {
     path: 'historial-medico',
     loadChildren: () => import('./pages/shared/historial-medico/historial-medico.module').then( m => m.HistorialMedicoPageModule)
+  },
+  {
+    path: 'buscar-medicos',
+    loadChildren: () => import('./pages/paciente/buscar-medicos/buscar-medicos.module').then( m => m.BuscarMedicosPageModule)
+  },
+  {
+    path: 'usuarios',
+    loadChildren: () => import('./pages/admin/usuarios/usuarios.module').then( m => m.UsuariosPageModule)
   }
 ];
 

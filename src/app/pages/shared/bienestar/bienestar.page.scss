@@ -1,0 +1,489 @@
+ion-content {
+  --background: linear-gradient(135deg, var(--ion-color-light-tint) 0%, var(--ion-color-light) 100%);
+}
+
+// Tabs de navegación
+.tab-buttons {
+  padding: 10px 15px 0;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  ion-segment {
+    --background: var(--ion-color-light);
+    border-radius: 25px;
+    
+    ion-segment-button {
+      --background-checked: var(--ion-color-primary);
+      --color-checked: white;
+      --border-radius: 20px;
+      font-size: 0.85rem;
+      
+      ion-icon {
+        font-size: 1.2rem;
+        margin-bottom: 2px;
+      }
+      
+      ion-label {
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+// Contenido general
+.tab-content {
+  padding: 20px 15px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// Vista de Inicio
+.welcome-section {
+  margin-bottom: 25px;
+  
+  .welcome-card {
+    background: linear-gradient(135deg, var(--ion-color-primary-tint) 0%, var(--ion-color-primary) 100%);
+    color: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    
+    .welcome-content {
+      text-align: center;
+      padding: 10px;
+      
+      ion-icon {
+        margin-bottom: 15px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      }
+      
+      h2 {
+        margin: 0 0 15px 0;
+        font-weight: 700;
+        font-size: 1.8rem;
+      }
+      
+      .motivational-quote {
+        font-style: italic;
+        font-size: 1rem;
+        opacity: 0.9;
+        line-height: 1.4;
+        margin: 0;
+      }
+    }
+  }
+}
+
+.daily-tip {
+  margin-bottom: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  
+  ion-card-header {
+    background: linear-gradient(135deg, var(--ion-color-success-tint) 0%, transparent 100%);
+    
+    ion-card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+    }
+    
+    ion-card-subtitle {
+      color: var(--ion-color-medium);
+      font-weight: 500;
+    }
+  }
+  
+  ion-card-content p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--ion-color-dark);
+    margin: 0;
+  }
+}
+
+// Estadísticas
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+  
+  .stat-card {
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    
+    .stat-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      
+      ion-icon {
+        font-size: 2rem;
+        flex-shrink: 0;
+      }
+      
+      div {
+        flex: 1;
+        
+        h3 {
+          margin: 0 0 5px 0;
+          font-weight: 700;
+          font-size: 1.2rem;
+          color: var(--ion-color-dark);
+        }
+        
+        p {
+          margin: 0;
+          font-size: 0.85rem;
+          color: var(--ion-color-medium);
+        }
+      }
+    }
+  }
+}
+
+// Clases de color para las tendencias
+.text-success {
+  color: var(--ion-color-success) !important;
+}
+
+.text-danger {
+  color: var(--ion-color-danger) !important;
+}
+
+.text-medium {
+  color: var(--ion-color-medium) !important;
+}
+
+// Acceso rápido
+.quick-actions {
+  h3 {
+    margin: 0 0 15px 0;
+    color: var(--ion-color-dark);
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    
+    ion-button {
+      --border-radius: 15px;
+      --border-width: 2px;
+      height: 50px;
+      font-weight: 500;
+      
+      &:hover {
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// Vista de Ejercicios
+.exercises-header {
+  text-align: center;
+  margin-bottom: 25px;
+  
+  h2 {
+    margin: 0 0 10px 0;
+    color: var(--ion-color-dark);
+    font-weight: 700;
+  }
+  
+  p {
+    margin: 0;
+    color: var(--ion-color-medium);
+  }
+}
+
+.exercise-categories {
+  margin-bottom: 20px;
+  
+  ion-segment {
+    --background: var(--ion-color-light);
+    border-radius: 20px;
+    
+    ion-segment-button {
+      --background-checked: var(--ion-color-success);
+      --color-checked: white;
+      --border-radius: 15px;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+.exercises-list {
+  .exercise-card {
+    margin-bottom: 15px;
+    border-radius: 16px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+    
+    .exercise-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      
+      .exercise-icon {
+        flex-shrink: 0;
+        padding: 10px;
+        background: var(--ion-color-light-tint);
+        border-radius: 12px;
+        
+        ion-icon {
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+      }
+      
+      .exercise-info {
+        flex: 1;
+        
+        h3 {
+          margin: 0 0 8px 0;
+          font-weight: 600;
+          color: var(--ion-color-dark);
+        }
+        
+        p {
+          margin: 0 0 12px 0;
+          color: var(--ion-color-medium);
+          font-size: 0.9rem;
+          line-height: 1.4;
+        }
+        
+        .exercise-meta {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          
+          ion-chip {
+            font-size: 0.8rem;
+            height: 28px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Vista de Registro de Estado
+.mood-tracker {
+  h2 {
+    text-align: center;
+    margin: 0 0 25px 0;
+    color: var(--ion-color-dark);
+    font-weight: 700;
+  }
+  
+  .mood-card {
+    border-radius: 20px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    
+    .mood-selector {
+      margin-bottom: 25px;
+      
+      h3 {
+        margin: 0 0 15px 0;
+        color: var(--ion-color-dark);
+        font-weight: 600;
+        text-align: center;
+      }
+      
+      ion-range {
+        padding: 20px 0;
+      }
+      
+      .mood-display {
+        text-align: center;
+        margin-top: 15px;
+        
+        ion-chip {
+          font-size: 1rem;
+          font-weight: 600;
+          height: 40px;
+          padding: 0 20px;
+        }
+      }
+    }
+    
+    .activities-section {
+      margin-bottom: 25px;
+      
+      h3 {
+        margin: 0 0 15px 0;
+        color: var(--ion-color-dark);
+        font-weight: 600;
+      }
+      
+      .activities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+        
+        ion-chip {
+          cursor: pointer;
+          transition: all 0.3s ease;
+          text-align: center;
+          justify-content: center;
+          height: 40px;
+          font-weight: 500;
+          
+          &:hover {
+            transform: translateY(-2px);
+          }
+        }
+      }
+    }
+    
+    .notes-section {
+      margin-bottom: 25px;
+      
+      h3 {
+        margin: 0 0 15px 0;
+        color: var(--ion-color-dark);
+        font-weight: 600;
+      }
+      
+      ion-textarea {
+        --background: var(--ion-color-light-tint);
+        --border-radius: 12px;
+        --padding-start: 15px;
+        --padding-top: 15px;
+      }
+    }
+    
+    .register-button {
+      --border-radius: 25px;
+      height: 55px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-top: 10px;
+    }
+  }
+}
+
+// Vista de Consejos
+.tips-header {
+  text-align: center;
+  margin-bottom: 25px;
+  
+  h2 {
+    margin: 0 0 10px 0;
+    color: var(--ion-color-dark);
+    font-weight: 700;
+  }
+  
+  p {
+    margin: 0;
+    color: var(--ion-color-medium);
+  }
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  
+  .category-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    
+    .category-header {
+      text-align: center;
+      padding: 20px 20px 10px;
+      background: linear-gradient(135deg, var(--ion-color-light) 0%, var(--ion-color-light-tint) 100%);
+      
+      ion-icon {
+        margin-bottom: 10px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      }
+      
+      h3 {
+        margin: 0;
+        font-weight: 600;
+        color: var(--ion-color-dark);
+      }
+    }
+    
+    .category-tips {
+      padding: 15px 20px 20px;
+      
+      .tip-item {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--ion-color-light);
+        
+        &:last-child {
+          margin-bottom: 0;
+          padding-bottom: 0;
+          border-bottom: none;
+        }
+        
+        p {
+          margin: 0 0 8px 0;
+          line-height: 1.4;
+          color: var(--ion-color-dark);
+          font-size: 0.95rem;
+        }
+        
+        small {
+          color: var(--ion-color-medium);
+          font-weight: 500;
+          font-style: italic;
+        }
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .tab-content {
+    padding: 15px 10px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .actions-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .activities-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+  }
+  
+  .categories-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .tab-buttons {
+    padding: 10px;
+    
+    ion-segment ion-segment-button {
+      font-size: 0.75rem;
+      
+      ion-icon {
+        font-size: 1rem;
+      }
+    }
+  }
+}
