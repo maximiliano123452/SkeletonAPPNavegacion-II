@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { StorageService } from './storage.service';
-import { 
-  UsuarioBase, 
-  Medico, 
-  Paciente, 
-  Administrador, 
-  TipoUsuario, 
-  LoginRequest, 
+import {
+  UsuarioBase,
+  Medico,
+  Paciente,
+  Administrador,
+  TipoUsuario,
+  LoginRequest,
   RegistroRequest,
-  EstadoVerificacion 
+  EstadoVerificacion
 } from '../models/user.models';
 
 @Injectable({
@@ -51,30 +51,26 @@ export class AuthService {
    */
   async register(datos: RegistroRequest): Promise<UsuarioBase> {
     try {
-      // Verificar si el email ya existe
       const existingUser = await this.storageService.getObject(`user_${datos.email}`);
       if (existingUser) {
         throw new Error('El email ya está registrado');
       }
 
-      // Crear usuario base
       const usuarioBase: UsuarioBase = {
         id: this.generateId(),
         email: datos.email,
         nombre: datos.nombre,
         apellido: datos.apellido,
         telefono: datos.telefono,
-        fechaNacimiento: new Date(), // Se actualizará en el perfil
+        fechaNacimiento: new Date(), // Actualizar en perfil real
         tipoUsuario: datos.tipoUsuario,
         activo: true,
         fechaRegistro: new Date()
       };
 
-      // Guardar usuario
       await this.storageService.setObject(`user_${datos.email}`, usuarioBase);
       await this.storageService.set(`password_${datos.email}`, datos.password);
 
-      // Establecer como usuario actual
       this.currentUserSubject.next(usuarioBase);
       this.isAuthenticatedSubject.next(true);
       await this.storageService.setObject('currentUser', usuarioBase);
@@ -91,23 +87,19 @@ export class AuthService {
    */
   async login(credentials: LoginRequest): Promise<UsuarioBase> {
     try {
-      // Verificar usuario
       const user = await this.storageService.getObject(`user_${credentials.email}`);
       if (!user) {
         throw new Error('Usuario no encontrado');
       }
 
-      // Verificar contraseña
       const storedPassword = await this.storageService.get(`password_${credentials.email}`);
       if (storedPassword !== credentials.password) {
         throw new Error('Contraseña incorrecta');
       }
 
-      // Actualizar último acceso
       user.ultimoAcceso = new Date();
       await this.storageService.setObject(`user_${credentials.email}`, user);
 
-      // Establecer como usuario actual
       this.currentUserSubject.next(user);
       this.isAuthenticatedSubject.next(true);
       await this.storageService.setObject('currentUser', user);
@@ -141,7 +133,7 @@ export class AuthService {
   }
 
   /**
-   * Verificar si está autenticado
+   * Verificar autenticación
    */
   isAuthenticated(): boolean {
     return this.isAuthenticatedSubject.value;
@@ -157,11 +149,9 @@ export class AuthService {
         throw new Error('Usuario no autorizado');
       }
 
-      // Actualizar datos del médico
       await this.storageService.setObject(`user_${medico.email}`, medico);
       await this.storageService.setObject(`perfil_medico_${medico.email}`, medico);
-      
-      // Actualizar usuario actual
+
       this.currentUserSubject.next(medico);
       await this.storageService.setObject('currentUser', medico);
     } catch (error) {
@@ -171,7 +161,7 @@ export class AuthService {
   }
 
   /**
-   * Obtener perfil de médico
+   * Obtener perfil médico
    */
   async getPerfilMedico(): Promise<Medico | null> {
     try {
@@ -179,7 +169,6 @@ export class AuthService {
       if (!currentUser || currentUser.tipoUsuario !== TipoUsuario.MEDICO) {
         return null;
       }
-
       return await this.storageService.getObject(`perfil_medico_${currentUser.email}`);
     } catch (error) {
       console.error('Error obteniendo perfil médico:', error);
@@ -188,7 +177,7 @@ export class AuthService {
   }
 
   /**
-   * Actualizar perfil de paciente
+   * Actualizar perfil paciente
    */
   async actualizarPerfilPaciente(paciente: Paciente): Promise<void> {
     try {
@@ -197,11 +186,9 @@ export class AuthService {
         throw new Error('Usuario no autorizado');
       }
 
-      // Actualizar datos del paciente
       await this.storageService.setObject(`user_${paciente.email}`, paciente);
       await this.storageService.setObject(`perfil_paciente_${paciente.email}`, paciente);
-      
-      // Actualizar usuario actual
+
       this.currentUserSubject.next(paciente);
       await this.storageService.setObject('currentUser', paciente);
     } catch (error) {
@@ -211,7 +198,7 @@ export class AuthService {
   }
 
   /**
-   * Obtener perfil de paciente
+   * Obtener perfil paciente
    */
   async getPerfilPaciente(): Promise<Paciente | null> {
     try {
@@ -219,7 +206,6 @@ export class AuthService {
       if (!currentUser || currentUser.tipoUsuario !== TipoUsuario.PACIENTE) {
         return null;
       }
-
       return await this.storageService.getObject(`perfil_paciente_${currentUser.email}`);
     } catch (error) {
       console.error('Error obteniendo perfil paciente:', error);
@@ -233,19 +219,16 @@ export class AuthService {
   async buscarMedicosPorUbicacion(latitud: number, longitud: number, radio: number = 10): Promise<Medico[]> {
     try {
       const medicos: Medico[] = [];
-      
-      // Simular búsqueda en storage (en producción sería una API)
       const keys = await this.storageService.keys();
+
       for (const key of keys) {
         if (key.startsWith('perfil_medico_')) {
           const medico = await this.storageService.getObject(key);
           if (medico && medico.verificado === EstadoVerificacion.VERIFICADO && medico.coordenadas) {
-            // Calcular distancia
             const distancia = this.calcularDistancia(
               latitud, longitud,
               medico.coordenadas.latitude, medico.coordenadas.longitude
             );
-            
             if (distancia <= radio) {
               medico.distancia = distancia;
               medicos.push(medico);
@@ -253,7 +236,7 @@ export class AuthService {
           }
         }
       }
-      
+
       return medicos.sort((a, b) => (a.distancia || 0) - (b.distancia || 0));
     } catch (error) {
       console.error('Error buscando médicos:', error);
@@ -262,13 +245,13 @@ export class AuthService {
   }
 
   /**
-   * Obtener médicos pendientes de verificación (para admins)
+   * Obtener médicos pendientes de verificación
    */
   async getMedicosPendientesVerificacion(): Promise<Medico[]> {
     try {
       const medicos: Medico[] = [];
       const keys = await this.storageService.keys();
-      
+
       for (const key of keys) {
         if (key.startsWith('perfil_medico_')) {
           const medico = await this.storageService.getObject(key);
@@ -277,7 +260,7 @@ export class AuthService {
           }
         }
       }
-      
+
       return medicos;
     } catch (error) {
       console.error('Error obteniendo médicos pendientes:', error);
@@ -286,7 +269,7 @@ export class AuthService {
   }
 
   /**
-   * Verificar médico (para admins)
+   * Verificar médico (Admin)
    */
   async verificarMedico(medicoId: string, estado: EstadoVerificacion): Promise<void> {
     try {
@@ -295,7 +278,6 @@ export class AuthService {
         throw new Error('No autorizado');
       }
 
-      // Buscar y actualizar médico
       const keys = await this.storageService.keys();
       for (const key of keys) {
         if (key.startsWith('perfil_medico_')) {
@@ -322,17 +304,17 @@ export class AuthService {
   }
 
   /**
-   * Calcular distancia entre dos puntos (fórmula de Haversine simplificada)
+   * Calcular distancia entre dos puntos (Haversine simplificado)
    */
   private calcularDistancia(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371; // Radio de la Tierra en km
+    const R = 6371; // Radio Tierra km
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   }
 }

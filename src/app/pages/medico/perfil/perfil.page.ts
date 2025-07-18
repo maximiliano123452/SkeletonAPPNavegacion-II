@@ -13,7 +13,7 @@ import { Medico, EstadoVerificacion } from '../../../models/user.models';
   standalone: false
 })
 export class PerfilPage implements OnInit {
-  
+
   medicoForm!: FormGroup;
   fotoPerfil: string = '';
   ubicacionActual: Coordenadas | null = null;
@@ -21,30 +21,15 @@ export class PerfilPage implements OnInit {
   perfilCompletado = false;
 
   especialidades = [
-    'Medicina General',
-    'Cardiología',
-    'Dermatología',
-    'Neurología',
-    'Pediatría',
-    'Ginecología',
-    'Traumatología',
-    'Psiquiatría',
-    'Oftalmología',
-    'Otorrinolaringología',
-    'Urología',
-    'Endocrinología',
-    'Gastroenterología',
-    'Neumología',
-    'Reumatología'
+    'Medicina General', 'Cardiología', 'Dermatología', 'Neurología', 'Pediatría',
+    'Ginecología', 'Traumatología', 'Psiquiatría', 'Oftalmología', 'Otorrinolaringología',
+    'Urología', 'Endocrinología', 'Gastroenterología', 'Neumología', 'Reumatología'
   ];
 
   diasSemana = [
-    { value: 'lunes', label: 'Lunes' },
-    { value: 'martes', label: 'Martes' },
-    { value: 'miercoles', label: 'Miércoles' },
-    { value: 'jueves', label: 'Jueves' },
-    { value: 'viernes', label: 'Viernes' },
-    { value: 'sabado', label: 'Sábado' },
+    { value: 'lunes', label: 'Lunes' }, { value: 'martes', label: 'Martes' },
+    { value: 'miercoles', label: 'Miércoles' }, { value: 'jueves', label: 'Jueves' },
+    { value: 'viernes', label: 'Viernes' }, { value: 'sabado', label: 'Sábado' },
     { value: 'domingo', label: 'Domingo' }
   ];
 
@@ -66,25 +51,18 @@ export class PerfilPage implements OnInit {
 
   initForm() {
     this.medicoForm = this.fb.group({
-      // Información personal (ya viene del registro)
       nombre: [{ value: '', disabled: true }],
       apellido: [{ value: '', disabled: true }],
       email: [{ value: '', disabled: true }],
       telefono: ['', [Validators.required, Validators.pattern(/^[0-9+\-\s]+$/)]],
       fechaNacimiento: ['', Validators.required],
-      
-      // Información profesional
       especialidad: ['', Validators.required],
       numeroLicencia: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       universidad: ['', Validators.required],
       experiencia: ['', [Validators.required, Validators.min(0), Validators.max(50)]],
       certificaciones: this.fb.array([]),
-      
-      // Consultorio
       direccionConsultorio: ['', Validators.required],
       tarifaConsulta: ['', [Validators.required, Validators.min(1000)]],
-      
-      // Horarios
       horarioAtencion: this.fb.group({
         dias: [[], Validators.required],
         horaInicio: ['', Validators.required],
@@ -101,7 +79,6 @@ export class PerfilPage implements OnInit {
     try {
       const usuario = this.authService.getCurrentUser();
       if (usuario) {
-        // Cargar datos básicos del usuario
         this.medicoForm.patchValue({
           nombre: usuario.nombre,
           apellido: usuario.apellido,
@@ -109,7 +86,6 @@ export class PerfilPage implements OnInit {
           telefono: usuario.telefono
         });
 
-        // Si ya existe un perfil médico completo, cargarlo
         const perfilMedico = await this.authService.getPerfilMedico();
         if (perfilMedico) {
           this.cargarDatosCompletos(perfilMedico);
@@ -133,16 +109,17 @@ export class PerfilPage implements OnInit {
       horarioAtencion: medico.horarioAtencion
     });
 
-    // Cargar certificaciones
     if (medico.certificaciones) {
-      medico.certificaciones.forEach(cert => {
-        this.certificaciones.push(this.fb.control(cert, Validators.required));
-      });
+      medico.certificaciones.forEach(cert =>
+        this.certificaciones.push(this.fb.control(cert, Validators.required))
+      );
     }
 
-    // Cargar foto y ubicación
     this.fotoPerfil = medico.fotoPerfil || '';
-    this.ubicacionActual = medico.coordenadas || null;
+    this.ubicacionActual = medico.coordenadas ? {
+    latitude: medico.coordenadas.latitud,
+    longitude: medico.coordenadas.longitud
+    } : null;
     this.perfilCompletado = medico.verificado !== EstadoVerificacion.PENDIENTE;
   }
 
@@ -158,25 +135,9 @@ export class PerfilPage implements OnInit {
     const actionSheet = await this.actionSheetController.create({
       header: 'Seleccionar foto de perfil',
       buttons: [
-        {
-          text: 'Tomar foto',
-          icon: 'camera',
-          handler: () => {
-            this.tomarFoto();
-          }
-        },
-        {
-          text: 'Seleccionar de galería',
-          icon: 'images',
-          handler: () => {
-            this.seleccionarDeGaleria();
-          }
-        },
-        {
-          text: 'Cancelar',
-          icon: 'close',
-          role: 'cancel'
-        }
+        { text: 'Tomar foto', icon: 'camera', handler: () => this.tomarFoto() },
+        { text: 'Seleccionar de galería', icon: 'images', handler: () => this.seleccionarDeGaleria() },
+        { text: 'Cancelar', icon: 'close', role: 'cancel' }
       ]
     });
     await actionSheet.present();
@@ -200,9 +161,12 @@ export class PerfilPage implements OnInit {
 
   async obtenerUbicacion() {
     this.cargandoUbicacion = true;
-    
     try {
-      this.ubicacionActual = await this.geolocationService.getCurrentPosition();
+      const posicion = await this.geolocationService.getCurrentPosition();
+      this.ubicacionActual = {
+        latitude: posicion.latitude,
+        longitude: posicion.longitude
+      };
       await this.mostrarToast('Ubicación obtenida correctamente', 'success');
     } catch (error: any) {
       await this.mostrarToast(error.message || 'Error obteniendo ubicación', 'danger');
@@ -213,19 +177,19 @@ export class PerfilPage implements OnInit {
 
   async guardarPerfil() {
     if (this.medicoForm.valid && this.fotoPerfil && this.ubicacionActual) {
-      const loading = await this.loadingController.create({
-        message: 'Guardando perfil médico...'
-      });
+      const loading = await this.loadingController.create({ message: 'Guardando perfil médico...' });
       await loading.present();
 
       try {
         const usuario = this.authService.getCurrentUser();
-        
         const medicoData: Medico = {
           ...usuario,
           ...this.medicoForm.value,
           fotoPerfil: this.fotoPerfil,
-          coordenadas: this.ubicacionActual,
+          coordenadas: {
+            latitude: this.ubicacionActual.latitude,
+            longitude: this.ubicacionActual.longitude
+          },
           certificaciones: this.certificaciones.value,
           verificado: EstadoVerificacion.PENDIENTE,
           fechaRegistro: usuario?.fechaRegistro || new Date(),
@@ -234,11 +198,11 @@ export class PerfilPage implements OnInit {
         };
 
         await this.authService.actualizarPerfilMedico(medicoData);
-        
+
         await loading.dismiss();
         await this.mostrarToast('Perfil guardado exitosamente. En proceso de verificación.', 'success');
         this.perfilCompletado = true;
-        
+
       } catch (error: any) {
         await loading.dismiss();
         await this.mostrarToast(error.message || 'Error guardando el perfil', 'danger');
@@ -258,35 +222,31 @@ export class PerfilPage implements OnInit {
     await toast.present();
   }
 
-  // Validaciones específicas
   validarHorario(): boolean {
     const horario = this.medicoForm.get('horarioAtencion')?.value;
     if (!horario.horaInicio || !horario.horaFin) return false;
-    
+
     const inicio = new Date(`2000-01-01 ${horario.horaInicio}`);
     const fin = new Date(`2000-01-01 ${horario.horaFin}`);
-    
+
     return inicio < fin;
   }
 
   get formularioValido(): boolean {
-    return this.medicoForm.valid && 
-           !!this.fotoPerfil && 
-           !!this.ubicacionActual && 
-           this.validarHorario();
+    return this.medicoForm.valid &&
+      !!this.fotoPerfil &&
+      !!this.ubicacionActual &&
+      this.validarHorario();
   }
 
   get estadoVerificacion(): string {
     const usuario = this.authService.getCurrentUser() as Medico;
     if (!usuario || !usuario.verificado) return 'Pendiente';
-    
+
     switch (usuario.verificado) {
-      case EstadoVerificacion.VERIFICADO:
-        return 'Verificado';
-      case EstadoVerificacion.RECHAZADO:
-        return 'Rechazado';
-      default:
-        return 'Pendiente';
+      case EstadoVerificacion.VERIFICADO: return 'Verificado';
+      case EstadoVerificacion.RECHAZADO: return 'Rechazado';
+      default: return 'Pendiente';
     }
   }
 

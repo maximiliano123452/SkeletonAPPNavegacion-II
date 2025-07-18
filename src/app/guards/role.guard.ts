@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { TipoUsuario } from '../models/user.models';
 
@@ -17,8 +16,7 @@ export class RoleGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<boolean> | Promise<boolean> | boolean {
-    
+  ): boolean {
     const requiredRole = route.data['role'] as TipoUsuario;
     const currentUser = this.authService.getCurrentUser();
 
@@ -28,7 +26,6 @@ export class RoleGuard implements CanActivate {
     }
 
     if (currentUser.tipoUsuario !== requiredRole) {
-      // Redirige según el tipo de usuario actual
       this.redirectToUserHome(currentUser.tipoUsuario);
       return false;
     }

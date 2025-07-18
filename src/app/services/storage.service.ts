@@ -14,7 +14,6 @@ export class StorageService {
   }
 
   async init() {
-    // Crear instancia de storage
     const storage = await this.storage.create();
     this._storage = storage;
   }
@@ -25,10 +24,8 @@ export class StorageService {
   async set(key: string, value: any): Promise<void> {
     try {
       if (typeof value === 'string') {
-        // Para strings simples, usar Capacitor Preferences
         await Preferences.set({ key, value });
       } else {
-        // Para objetos complejos, usar Ionic Storage
         await this._storage?.set(key, value);
       }
     } catch (error) {
@@ -42,13 +39,10 @@ export class StorageService {
    */
   async get(key: string): Promise<any> {
     try {
-      // Intentar primero con Capacitor Preferences
       const prefsResult = await Preferences.get({ key });
       if (prefsResult.value !== null) {
         return prefsResult.value;
       }
-
-      // Si no existe en Preferences, buscar en Ionic Storage
       return await this._storage?.get(key);
     } catch (error) {
       console.error('Error getting data:', error);
@@ -76,8 +70,6 @@ export class StorageService {
     try {
       const prefsKeys = await Preferences.keys();
       const storageKeys = await this._storage?.keys() || [];
-      
-      // Combinar y eliminar duplicados
       return [...new Set([...prefsKeys.keys, ...storageKeys])];
     } catch (error) {
       console.error('Error getting keys:', error);
@@ -99,21 +91,22 @@ export class StorageService {
   }
 
   /**
-   * Método específico para datos JSON
+   * Guardar objetos como JSON string
    */
   async setObject(key: string, object: any): Promise<void> {
     await this.set(key, JSON.stringify(object));
   }
 
   /**
-   * Método específico para obtener datos JSON
+   * Obtener y parsear objetos JSON
    */
   async getObject(key: string): Promise<any> {
     const data = await this.get(key);
     try {
       return data ? JSON.parse(data) : null;
     } catch {
-      return data; // Si no es JSON válido, devolver como está
+      return data; // Si no es JSON válido, devuelve como está
     }
   }
 }
+

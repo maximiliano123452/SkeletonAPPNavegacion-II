@@ -22,6 +22,7 @@ import { AuthService } from './services/auth.service';
 import { GeolocationService } from './services/geolocation.service';
 import { CameraService } from './services/camera.service';
 import { WellnessService } from './services/wellness.service';
+import { FarmaciasService } from './services/farmacias.service';
 
 // Componentes
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
@@ -29,7 +30,7 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
 @NgModule({
   declarations: [
     AppComponent,
-    SideMenuComponent // 👈 NUEVO componente
+    SideMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +52,8 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
     AuthService,
     GeolocationService,
     CameraService,
-    WellnessService // 👈 NUEVO servicio
+    WellnessService,
+    FarmaciasService
   ],
   bootstrap: [AppComponent],
 })

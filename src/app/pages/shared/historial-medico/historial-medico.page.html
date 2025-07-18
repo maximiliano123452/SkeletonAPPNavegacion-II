@@ -1,13 +1,58 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>historial-medico</ion-title>
+    <ion-title>Historial Médico</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">historial-medico</ion-title>
+      <ion-title size="large">Historial Médico</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-input [(ngModel)]="nuevaFecha" type="date"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Diagnóstico</ion-label>
+      <ion-input [(ngModel)]="nuevoDiagnostico"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Tratamiento</ion-label>
+      <ion-input [(ngModel)]="nuevoTratamiento"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Medicamentos (separados por coma)</ion-label>
+      <ion-input [(ngModel)]="nuevosMedicamentos"></ion-input>
+    </ion-item>
+    <ion-button expand="full" (click)="agregarHistorial()">Agregar Historial</ion-button>
+  </ion-list>
+
+  <ion-list *ngIf="historiales.length > 0; else noData">
+    <ion-item-sliding *ngFor="let registro of historiales">
+      <ion-item>
+        <ion-label>
+          <h2>{{ registro.fecha }}</h2>
+          <p><strong>Diagnóstico:</strong> {{ registro.diagnostico }}</p>
+          <p><strong>Tratamiento:</strong> {{ registro.tratamiento }}</p>
+          <p><strong>Medicamentos:</strong> {{ registro.medicamentos.join(', ') }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="eliminarHistorial(registro.id!)"*ngIf="registro.id">
+          Eliminar
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ng-template #noData>
+    <ion-item>
+      <ion-label>No hay registros de historial médico.</ion-label>
+    </ion-item>
+  </ng-template>
 </ion-content>
+

@@ -1,0 +1,406 @@
+// Variables de colores
+:root {
+  --farmacia-primary: #2dd36f;
+  --farmacia-secondary: #3dc2ff;
+  --farmacia-danger: #eb445a;
+  --farmacia-warning: #ffc409;
+  --farmacia-light: #f4f5f8;
+}
+
+// Header y toolbar
+ion-header {
+  ion-toolbar {
+    --background: var(--farmacia-primary);
+    
+    ion-title {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  ion-searchbar {
+    --background: rgba(255, 255, 255, 0.1);
+    --color: white;
+    --placeholder-color: rgba(255, 255, 255, 0.7);
+    --icon-color: rgba(255, 255, 255, 0.7);
+    padding: 8px 16px;
+  }
+
+  ion-segment {
+    --background: rgba(255, 255, 255, 0.1);
+    padding: 8px 16px;
+    
+    ion-segment-button {
+      --color: rgba(255, 255, 255, 0.8);
+      --color-checked: var(--farmacia-primary);
+      --background-checked: white;
+      --border-radius: 8px;
+      min-width: auto;
+      font-size: 12px;
+      
+      ion-icon {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// Resultado header
+.resultado-header {
+  --background: var(--farmacia-light);
+  --color: var(--ion-color-dark);
+  margin: 0;
+  
+  ion-label {
+    h3 {
+      margin: 0;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+    }
+    
+    p {
+      margin: 4px 0 0 0;
+      font-size: 14px;
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+// Toggle de vista
+.vista-toggle {
+  margin: 16px;
+  --background: var(--ion-color-light);
+  border-radius: 12px;
+  
+  ion-segment-button {
+    --color: var(--ion-color-medium);
+    --color-checked: var(--farmacia-primary);
+    --background-checked: white;
+    --border-radius: 8px;
+    
+    ion-icon {
+      margin-bottom: 4px;
+    }
+  }
+}
+
+// Loading container
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  
+  ion-spinner {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 16px;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+// Servicios card
+.servicios-card {
+  margin: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  ion-card-header {
+    padding-bottom: 8px;
+    
+    ion-card-subtitle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+    }
+  }
+  
+  .servicio-chip {
+    margin: 4px 8px 4px 0;
+    --background: rgba(45, 211, 111, 0.1);
+    --color: var(--farmacia-primary);
+    
+    ion-icon {
+      margin-right: 4px;
+    }
+  }
+}
+
+// Lista de farmacias
+ion-list {
+  padding: 0;
+  
+  ion-item-sliding {
+    margin-bottom: 8px;
+    
+    ion-item {
+      --background: white;
+      --border-radius: 12px;
+      --padding-start: 16px;
+      --padding-end: 16px;
+      margin: 0 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      
+      ion-label {
+        h2 {
+          font-weight: 600;
+          color: var(--ion-color-dark);
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 4px;
+        }
+        
+        h3 {
+          color: var(--ion-color-medium);
+          font-weight: 500;
+          font-size: 14px;
+          margin-bottom: 8px;
+        }
+        
+        p {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          color: var(--ion-color-medium);
+          font-size: 13px;
+          margin: 2px 0;
+          
+          ion-icon {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Avatar de farmacia
+.farmacia-avatar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--farmacia-primary), var(--farmacia-secondary));
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 50%;
+  
+  &.turno {
+    background: linear-gradient(135deg, var(--farmacia-warning), #ff9500);
+    animation: pulse-turno 2s infinite;
+  }
+}
+
+.farmacia-avatar-small {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--farmacia-primary), var(--farmacia-secondary));
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 50%;
+  
+  &.turno {
+    background: linear-gradient(135deg, var(--farmacia-warning), #ff9500);
+  }
+}
+
+// Información de farmacia
+.farmacia-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  
+  .estado-chip {
+    font-size: 12px;
+    height: 24px;
+    
+    ion-icon {
+      font-size: 14px;
+    }
+  }
+  
+  .servicios-iconos {
+    display: flex;
+    gap: 4px;
+    
+    ion-icon {
+      font-size: 18px;
+    }
+  }
+}
+
+// Badge de turno
+.turno-badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  animation: pulse-badge 2s infinite;
+}
+
+// Estado vacío
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  
+  ion-icon {
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+  
+  h3 {
+    color: var(--ion-color-dark);
+    margin: 0 0 8px 0;
+  }
+  
+  p {
+    color: var(--ion-color-medium);
+    margin: 0 0 24px 0;
+    line-height: 1.5;
+  }
+}
+
+// Vista de mapa
+.mapa-container {
+  padding: 16px;
+  
+  .mapa-placeholder {
+    border-radius: 12px;
+    margin-bottom: 16px;
+    
+    .mapa-placeholder-content {
+      text-align: center;
+      padding: 40px 20px;
+      
+      ion-icon {
+        margin-bottom: 16px;
+        opacity: 0.7;
+      }
+      
+      h2 {
+        color: var(--ion-color-dark);
+        margin: 0 0 8px 0;
+      }
+      
+      p {
+        color: var(--ion-color-medium);
+        margin: 0 0 24px 0;
+      }
+    }
+  }
+  
+  .mapa-lista-compacta {
+    border-radius: 12px;
+    overflow: hidden;
+    
+    ion-list-header {
+      --background: var(--farmacia-light);
+      --color: var(--ion-color-dark);
+      font-weight: 600;
+    }
+    
+    ion-item {
+      --border-radius: 0;
+      --padding-start: 16px;
+      --padding-end: 16px;
+      
+      ion-label {
+        h3 {
+          font-weight: 600;
+          margin-bottom: 2px;
+        }
+        
+        p {
+          font-size: 13px;
+          color: var(--ion-color-medium);
+        }
+      }
+    }
+  }
+}
+
+// FAB personalizado
+ion-fab {
+  ion-fab-button {
+    --background: var(--farmacia-primary);
+    --color: white;
+    box-shadow: 0 4px 16px rgba(45, 211, 111, 0.3);
+    
+    &[color="light"] {
+      --background: white;
+      --color: var(--farmacia-primary);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Animaciones
+@keyframes pulse-turno {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+@keyframes pulse-badge {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .servicios-card {
+    margin: 8px;
+  }
+  
+  ion-item-sliding ion-item {
+    margin: 0 8px;
+  }
+  
+  .mapa-container {
+    padding: 8px;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .resultado-header {
+    --background: var(--ion-color-step-100);
+  }
+  
+  .servicios-card,
+  ion-item-sliding ion-item {
+    --background: var(--ion-color-step-50);
+  }
+  
+  .mapa-lista-compacta ion-list-header {
+    --background: var(--ion-color-step-100);
+  }
+}

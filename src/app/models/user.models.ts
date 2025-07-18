@@ -37,8 +37,8 @@ export interface Medico extends UsuarioBase {
   certificaciones: string[];
   direccionConsultorio: string;
   coordenadas?: {
-    latitude: number;
-    longitude: number;
+    latitud: number;
+    longitud: number;
   };
   horarioAtencion: {
     dias: string[];
@@ -58,8 +58,8 @@ export interface Paciente extends UsuarioBase {
   rut: string;
   direccion: string;
   coordenadas?: {
-    latitude: number;
-    longitude: number;
+    latitud: number;
+    longitud: number;
   };
   contactoEmergencia: {
     nombre: string;
