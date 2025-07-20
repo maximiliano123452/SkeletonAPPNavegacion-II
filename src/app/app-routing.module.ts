@@ -22,61 +22,66 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
-  
-  // 👈 RUTAS ESPECÍFICAS PARA MÉDICOS
+
+  // Rutas de MEDICO
   {
-    path: 'medico',
+    path: 'medico/perfil',
     canActivate: [AuthGuard, RoleGuard],
     data: { role: 'medico' },
-    children: [
-      {
-        path: 'perfil',
-        loadChildren: () => import('./pages/medico/perfil/perfil.module').then(m => m.PerfilPageModule)
-      },
-      {
-        path: '',
-        redirectTo: 'perfil',
-        pathMatch: 'full'
-      }
-    ]
+    loadChildren: () => import('./pages/medico/perfil/perfil.module').then(m => m.PerfilPageModule)
   },
-  
-  // 👈 RUTAS ESPECÍFICAS PARA PACIENTES
+
+  // Rutas de PACIENTE
   {
-    path: 'paciente',
+    path: 'paciente/perfil',
     canActivate: [AuthGuard, RoleGuard],
     data: { role: 'paciente' },
-    children: [
-      {
-        path: 'perfil',
-        loadChildren: () => import('./pages/paciente/perfil/perfil.module').then(m => m.PerfilPageModule)
-      },
-      {
-        path: '',
-        redirectTo: 'perfil',
-        pathMatch: 'full'
-      }
-    ]
+    loadChildren: () => import('./pages/paciente/perfil/perfil.module').then(m => m.PerfilPageModule)
   },
-  
-  // 👈 RUTAS ESPECÍFICAS PARA ADMINISTRADORES
   {
-    path: 'admin',
+    path: 'paciente/buscar-medicos',
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: 'paciente' },
+    loadChildren: () => import('./pages/paciente/buscar-medicos/buscar-medicos.module').then(m => m.BuscarMedicosPageModule)
+  },
+
+  // Rutas de ADMINISTRADOR
+  {
+    path: 'admin/dashboard',
     canActivate: [AuthGuard, RoleGuard],
     data: { role: 'administrador' },
-    children: [
-      {
-        path: 'dashboard',
-        loadChildren: () => import('./pages/admin/dashboard/dashboard.module').then(m => m.DashboardPageModule)
-      },
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full'
-      }
-    ]
+    loadChildren: () => import('./pages/admin/dashboard/dashboard.module').then(m => m.DashboardPageModule)
   },
-  
+  {
+    path: 'admin/usuarios',
+    canActivate: [AuthGuard, RoleGuard],
+    data: { role: 'administrador' },
+    loadChildren: () => import('./pages/admin/usuarios/usuarios.module').then(m => m.UsuariosPageModule)
+  },
+
+  // Rutas compartidas
+  {
+    path: 'bienestar',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/shared/bienestar/bienestar.module').then(m => m.BienestarPageModule)
+  },
+  {
+    path: 'farmacias',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/shared/farmacias/farmacias.module').then(m => m.FarmaciasPageModule)
+  },
+  {
+    path: 'citas',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/shared/citas/citas.module').then(m => m.CitasPageModule)
+  },
+  {
+    path: 'historial-medico',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/shared/historial-medico/historial-medico.module').then(m => m.HistorialMedicoPageModule)
+  },
+
+  // Página no encontrada
   {
     path: 'not-found',
     loadChildren: () => import('./pages/not-found/not-found.module').then(m => m.NotFoundPageModule)
@@ -84,38 +89,6 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'not-found'
-  },
-  {
-    path: 'perfil',
-    loadChildren: () => import('./pages/paciente/perfil/perfil.module').then( m => m.PerfilPageModule)
-  },
-  {
-    path: 'dashboard',
-    loadChildren: () => import('./pages/admin/dashboard/dashboard.module').then( m => m.DashboardPageModule)
-  },
-  {
-    path: 'bienestar',
-    loadChildren: () => import('./pages/shared/bienestar/bienestar.module').then( m => m.BienestarPageModule)
-  },
-  {
-    path: 'farmacias',
-    loadChildren: () => import('./pages/shared/farmacias/farmacias.module').then( m => m.FarmaciasPageModule)
-  },
-  {
-    path: 'citas',
-    loadChildren: () => import('./pages/shared/citas/citas.module').then( m => m.CitasPageModule)
-  },
-  {
-    path: 'historial-medico',
-    loadChildren: () => import('./pages/shared/historial-medico/historial-medico.module').then( m => m.HistorialMedicoPageModule)
-  },
-  {
-    path: 'buscar-medicos',
-    loadChildren: () => import('./pages/paciente/buscar-medicos/buscar-medicos.module').then( m => m.BuscarMedicosPageModule)
-  },
-  {
-    path: 'usuarios',
-    loadChildren: () => import('./pages/admin/usuarios/usuarios.module').then( m => m.UsuariosPageModule)
   }
 ];
 
@@ -126,5 +99,7 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+
+
 
 

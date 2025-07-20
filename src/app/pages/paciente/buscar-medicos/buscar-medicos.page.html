@@ -1,13 +1,31 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>buscar-medicos</ion-title>
+    <ion-title>Buscar Médicos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">buscar-medicos</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <ion-card *ngIf="medicos.length === 0">
+    <ion-card-content>
+      <p>No se encontraron médicos disponibles.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list *ngIf="medicos.length > 0">
+    <ion-item *ngFor="let medico of medicos">
+      <ion-avatar slot="start">
+        <ion-icon name="person-circle" size="large"></ion-icon>
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ medico.nombre }} {{ medico.apellido }}</h2>
+        <p>Especialidad: {{ medico.especialidad || 'General' }}</p>
+        <p>Distancia: {{ medico.distancia?.toFixed(2) || 'N/A' }} km</p>
+      </ion-label>
+      <ion-button slot="end" (click)="agendarCita(medico)">
+        Agendar
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
 </ion-content>

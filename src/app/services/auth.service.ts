@@ -31,9 +31,6 @@ export class AuthService {
     this.checkAuthState();
   }
 
-  /**
-   * Verifica el estado de autenticación al iniciar la app
-   */
   private async checkAuthState() {
     try {
       const userData = await this.storageService.getObject('currentUser');
@@ -46,9 +43,6 @@ export class AuthService {
     }
   }
 
-  /**
-   * Registro de usuario
-   */
   async register(datos: RegistroRequest): Promise<UsuarioBase> {
     try {
       const existingUser = await this.storageService.getObject(`user_${datos.email}`);
@@ -62,7 +56,7 @@ export class AuthService {
         nombre: datos.nombre,
         apellido: datos.apellido,
         telefono: datos.telefono,
-        fechaNacimiento: new Date(), // Actualizar en perfil real
+        fechaNacimiento: new Date(),
         tipoUsuario: datos.tipoUsuario,
         activo: true,
         fechaRegistro: new Date()
@@ -82,9 +76,6 @@ export class AuthService {
     }
   }
 
-  /**
-   * Login de usuario
-   */
   async login(credentials: LoginRequest): Promise<UsuarioBase> {
     try {
       const user = await this.storageService.getObject(`user_${credentials.email}`);
@@ -111,9 +102,6 @@ export class AuthService {
     }
   }
 
-  /**
-   * Logout
-   */
   async logout(): Promise<void> {
     try {
       await this.storageService.remove('currentUser');
@@ -125,29 +113,24 @@ export class AuthService {
     }
   }
 
-  /**
-   * Obtener usuario actual
-   */
   getCurrentUser(): UsuarioBase | null {
     return this.currentUserSubject.value;
   }
 
-  /**
-   * Verificar autenticación
-   */
   isAuthenticated(): boolean {
     return this.isAuthenticatedSubject.value;
   }
 
-  /**
-   * Actualizar perfil de médico
-   */
+  // ✅ PERFIL MÉDICO
   async actualizarPerfilMedico(medico: Medico): Promise<void> {
     try {
       const currentUser = this.getCurrentUser();
       if (!currentUser || currentUser.tipoUsuario !== TipoUsuario.MEDICO) {
         throw new Error('Usuario no autorizado');
       }
+
+      // Asegurar que el médico tenga un id
+      medico.id = medico.id || currentUser.id;
 
       await this.storageService.setObject(`user_${medico.email}`, medico);
       await this.storageService.setObject(`perfil_medico_${medico.email}`, medico);
@@ -160,9 +143,6 @@ export class AuthService {
     }
   }
 
-  /**
-   * Obtener perfil médico
-   */
   async getPerfilMedico(): Promise<Medico | null> {
     try {
       const currentUser = this.getCurrentUser();
@@ -176,9 +156,7 @@ export class AuthService {
     }
   }
 
-  /**
-   * Actualizar perfil paciente
-   */
+  // ✅ PERFIL PACIENTE
   async actualizarPerfilPaciente(paciente: Paciente): Promise<void> {
     try {
       const currentUser = this.getCurrentUser();
@@ -197,9 +175,6 @@ export class AuthService {
     }
   }
 
-  /**
-   * Obtener perfil paciente
-   */
   async getPerfilPaciente(): Promise<Paciente | null> {
     try {
       const currentUser = this.getCurrentUser();
@@ -213,9 +188,7 @@ export class AuthService {
     }
   }
 
-  /**
-   * Buscar médicos por ubicación
-   */
+  // ✅ BÚSQUEDA DE MÉDICOS
   async buscarMedicosPorUbicacion(latitud: number, longitud: number, radio: number = 10): Promise<Medico[]> {
     try {
       const medicos: Medico[] = [];
@@ -224,11 +197,18 @@ export class AuthService {
       for (const key of keys) {
         if (key.startsWith('perfil_medico_')) {
           const medico = await this.storageService.getObject(key);
+
           if (medico && medico.verificado === EstadoVerificacion.VERIFICADO && medico.coordenadas) {
+
+            if (!medico.id) {
+              medico.id = 'user_' + medico.email;
+            }
+
             const distancia = this.calcularDistancia(
               latitud, longitud,
               medico.coordenadas.latitude, medico.coordenadas.longitude
             );
+
             if (distancia <= radio) {
               medico.distancia = distancia;
               medicos.push(medico);
@@ -244,9 +224,7 @@ export class AuthService {
     }
   }
 
-  /**
-   * Obtener médicos pendientes de verificación
-   */
+  // ✅ ADMINISTRACIÓN DE MÉDICOS
   async getMedicosPendientesVerificacion(): Promise<Medico[]> {
     try {
       const medicos: Medico[] = [];
@@ -268,9 +246,6 @@ export class AuthService {
     }
   }
 
-  /**
-   * Verificar médico (Admin)
-   */
   async verificarMedico(medicoId: string, estado: EstadoVerificacion): Promise<void> {
     try {
       const currentUser = this.getCurrentUser();
@@ -296,18 +271,13 @@ export class AuthService {
     }
   }
 
-  /**
-   * Generar ID único
-   */
+  // ✅ UTILIDADES
   private generateId(): string {
     return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   }
 
-  /**
-   * Calcular distancia entre dos puntos (Haversine simplificado)
-   */
   private calcularDistancia(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371; // Radio Tierra km
+    const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const a =

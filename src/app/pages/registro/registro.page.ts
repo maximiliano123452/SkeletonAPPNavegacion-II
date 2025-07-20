@@ -13,7 +13,7 @@ import { TipoUsuario } from '../../models/user.models';
 })
 export class RegistroPage implements OnInit {
 
-  registroForm!: FormGroup; // 👈 CORREGIDO con !
+  registroForm!: FormGroup;
   tiposUsuario = [
     { value: TipoUsuario.PACIENTE, label: 'Paciente', icon: 'person', color: 'primary' },
     { value: TipoUsuario.MEDICO, label: 'Médico', icon: 'medical', color: 'success' },
@@ -50,7 +50,6 @@ export class RegistroPage implements OnInit {
     });
   }
 
-  // Validador personalizado para confirmar contraseña
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
@@ -90,8 +89,8 @@ export class RegistroPage implements OnInit {
         await loading.dismiss();
         await this.showToast('Usuario registrado exitosamente', 'success');
         
-        // Redirigir según el tipo de usuario
-        this.redirectToUserProfile(formData.tipoUsuario);
+        // 🔄 Redirigir siempre al Home general
+        this.router.navigate(['/home']);
         
       } catch (error: any) {
         await loading.dismiss();
@@ -99,22 +98,6 @@ export class RegistroPage implements OnInit {
       }
     } else {
       await this.showToast('Por favor, complete todos los campos correctamente', 'warning');
-    }
-  }
-
-  private redirectToUserProfile(tipoUsuario: TipoUsuario) {
-    switch (tipoUsuario) {
-      case TipoUsuario.MEDICO:
-        this.router.navigate(['/medico/perfil']);
-        break;
-      case TipoUsuario.PACIENTE:
-        this.router.navigate(['/paciente/perfil']);
-        break;
-      case TipoUsuario.ADMINISTRADOR:
-        this.router.navigate(['/admin/dashboard']);
-        break;
-      default:
-        this.router.navigate(['/home']);
     }
   }
 

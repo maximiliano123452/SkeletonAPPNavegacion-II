@@ -14,7 +14,7 @@
 
 <ion-content [fullscreen]="true">
   <div class="home-container">
-    
+
     <div class="welcome-section">
       <ion-icon name="medical" size="large" color="primary"></ion-icon>
       <h1>¡Bienvenido!</h1>
@@ -24,13 +24,11 @@
       </p>
     </div>
 
-    <!-- Acceso rápido a funcionalidades principales -->
     <div class="quick-access">
       <h2>Acceso Rápido</h2>
-      
+
       <div class="access-grid">
-        
-        <!-- Mi Perfil -->
+
         <ion-card class="access-card" (click)="irAPerfil()">
           <ion-card-content>
             <div class="card-icon">
@@ -41,7 +39,6 @@
           </ion-card-content>
         </ion-card>
 
-        <!-- Bienestar -->
         <ion-card class="access-card" (click)="navegarA('/bienestar')">
           <ion-card-content>
             <div class="card-icon">
@@ -52,7 +49,6 @@
           </ion-card-content>
         </ion-card>
 
-        <!-- Farmacias -->
         <ion-card class="access-card" (click)="navegarA('/farmacias')">
           <ion-card-content>
             <div class="card-icon">
@@ -63,7 +59,6 @@
           </ion-card-content>
         </ion-card>
 
-        <!-- Citas -->
         <ion-card class="access-card" (click)="navegarA('/citas')">
           <ion-card-content>
             <div class="card-icon">
@@ -74,7 +69,6 @@
           </ion-card-content>
         </ion-card>
 
-        <!-- Historial Médico -->
         <ion-card class="access-card" (click)="navegarA('/historial-medico')">
           <ion-card-content>
             <div class="card-icon">
@@ -85,8 +79,8 @@
           </ion-card-content>
         </ion-card>
 
-        <!-- Buscar Médicos (solo para pacientes) -->
-        <ion-card class="access-card" *ngIf="usuario?.tipoUsuario === 'paciente'" (click)="navegarA('/buscar-medicos')">
+        <!-- SOLO PACIENTE -->
+        <ion-card class="access-card" *ngIf="usuario?.tipoUsuario === 'paciente'" (click)="navegarA('/paciente/buscar-medicos')">
           <ion-card-content>
             <div class="card-icon">
               <ion-icon name="search" color="medium"></ion-icon>
@@ -99,7 +93,7 @@
       </div>
     </div>
 
-    <!-- Información específica por tipo de usuario -->
+    <!-- Paneles específicos -->
     <div class="info-section" *ngIf="usuario?.tipoUsuario === 'medico'">
       <ion-card color="success">
         <ion-card-content>
@@ -107,7 +101,7 @@
             <ion-icon name="medical" size="large"></ion-icon>
             <div>
               <h3>Panel Médico</h3>
-              <p>Complete su perfil para comenzar a recibir consultas de pacientes.</p>
+              <p>Complete su perfil para comenzar a recibir consultas.</p>
               <ion-button fill="outline" color="light" size="small" (click)="irAPerfil()">
                 Completar Perfil
               </ion-button>
@@ -124,8 +118,8 @@
             <ion-icon name="person" size="large"></ion-icon>
             <div>
               <h3>Panel Paciente</h3>
-              <p>Busque médicos cerca de usted y agende sus consultas.</p>
-              <ion-button fill="outline" color="light" size="small" (click)="navegarA('/buscar-medicos')">
+              <p>Busque médicos cerca y agende sus consultas.</p>
+              <ion-button fill="outline" color="light" size="small" (click)="navegarA('/paciente/buscar-medicos')">
                 Buscar Médicos
               </ion-button>
             </div>
@@ -141,7 +135,7 @@
             <ion-icon name="shield-checkmark" size="large"></ion-icon>
             <div>
               <h3>Panel Administrador</h3>
-              <p>Gestione usuarios y verifique perfiles médicos.</p>
+              <p>Gestione usuarios y verifique médicos.</p>
               <ion-button fill="outline" color="light" size="small" (click)="navegarA('/admin/dashboard')">
                 Ir al Dashboard
               </ion-button>

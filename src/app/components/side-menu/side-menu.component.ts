@@ -31,94 +31,37 @@ export class SideMenuComponent implements OnInit {
   }
 
   setupMenuItems() {
-    // Elementos comunes para todos
     const commonItems = [
-      {
-        title: 'Inicio',
-        url: '/home',
-        icon: 'home',
-        color: 'primary'
-      },
-      {
-        title: 'Bienestar',
-        url: '/bienestar',
-        icon: 'heart',
-        color: 'success'
-      },
-      {
-        title: 'Farmacias',
-        url: '/farmacias',
-        icon: 'medical',
-        color: 'tertiary'
-      },
-      {
-        title: 'Historial Médico',
-        url: '/historial-medico',
-        icon: 'document-text',
-        color: 'warning'
-      }
+      { title: 'Inicio', url: '/home', icon: 'home', color: 'primary' },
+      { title: 'Bienestar', url: '/bienestar', icon: 'heart', color: 'success' },
+      { title: 'Farmacias', url: '/farmacias', icon: 'medical', color: 'tertiary' },
+      { title: 'Historial Médico', url: '/historial-medico', icon: 'document-text', color: 'warning' }
     ];
 
-    // Elementos específicos por tipo de usuario
     if (this.usuario) {
       switch (this.usuario.tipoUsuario) {
         case TipoUsuario.MEDICO:
           this.menuItems = [
             ...commonItems,
-            {
-              title: 'Mi Perfil Médico',
-              url: '/medico/perfil',
-              icon: 'person-circle',
-              color: 'success'
-            },
-            {
-              title: 'Mis Citas',
-              url: '/citas',
-              icon: 'calendar',
-              color: 'secondary'
-            }
+            { title: 'Mi Perfil Médico', url: '/medico/perfil', icon: 'person-circle', color: 'success' },
+            { title: 'Mis Citas', url: '/citas', icon: 'calendar', color: 'secondary' }
           ];
           break;
 
         case TipoUsuario.PACIENTE:
           this.menuItems = [
             ...commonItems,
-            {
-              title: 'Mi Perfil',
-              url: '/paciente/perfil',
-              icon: 'person-circle',
-              color: 'primary'
-            },
-            {
-              title: 'Buscar Médicos',
-              url: '/buscar-medicos',
-              icon: 'search',
-              color: 'secondary'
-            },
-            {
-              title: 'Mis Citas',
-              url: '/citas',
-              icon: 'calendar',
-              color: 'secondary'
-            }
+            { title: 'Mi Perfil', url: '/paciente/perfil', icon: 'person-circle', color: 'primary' },
+            { title: 'Buscar Médicos', url: '/paciente/buscar-medicos', icon: 'search', color: 'secondary' },
+            { title: 'Mis Citas', url: '/citas', icon: 'calendar', color: 'secondary' }
           ];
           break;
 
         case TipoUsuario.ADMINISTRADOR:
           this.menuItems = [
             ...commonItems,
-            {
-              title: 'Dashboard Admin',
-              url: '/admin/dashboard',
-              icon: 'shield-checkmark',
-              color: 'warning'
-            },
-            {
-              title: 'Gestionar Usuarios',
-              url: '/admin/usuarios',
-              icon: 'people',
-              color: 'danger'
-            }
+            { title: 'Dashboard Admin', url: '/admin/dashboard', icon: 'shield-checkmark', color: 'warning' },
+            { title: 'Gestionar Usuarios', url: '/admin/usuarios', icon: 'people', color: 'danger' }
           ];
           break;
 
@@ -127,18 +70,8 @@ export class SideMenuComponent implements OnInit {
       }
     } else {
       this.menuItems = [
-        {
-          title: 'Iniciar Sesión',
-          url: '/login',
-          icon: 'log-in',
-          color: 'primary'
-        },
-        {
-          title: 'Registrarse',
-          url: '/registro',
-          icon: 'person-add',
-          color: 'success'
-        }
+        { title: 'Iniciar Sesión', url: '/login', icon: 'log-in', color: 'primary' },
+        { title: 'Registrarse', url: '/registro', icon: 'person-add', color: 'success' }
       ];
     }
   }
@@ -155,16 +88,11 @@ export class SideMenuComponent implements OnInit {
 
   get tipoUsuarioLabel(): string {
     if (!this.usuario) return '';
-    
     switch (this.usuario.tipoUsuario) {
-      case TipoUsuario.MEDICO:
-        return 'Médico';
-      case TipoUsuario.PACIENTE:
-        return 'Paciente';
-      case TipoUsuario.ADMINISTRADOR:
-        return 'Administrador';
-      default:
-        return 'Usuario';
+      case TipoUsuario.MEDICO: return 'Médico';
+      case TipoUsuario.PACIENTE: return 'Paciente';
+      case TipoUsuario.ADMINISTRADOR: return 'Administrador';
+      default: return 'Usuario';
     }
   }
 
